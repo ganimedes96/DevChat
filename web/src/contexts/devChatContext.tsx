@@ -47,7 +47,7 @@ type DevChatContextType = {
     data: IMessage,
     handleCategory: string
   ) => Promise<void>;
-  getCategory(handleCategory: string): void;
+
 };
 
 export const DevChatContext = createContext({} as DevChatContextType);
@@ -56,7 +56,6 @@ export function DevChatProvider({ children }: childrenProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const [error, setError] = useState("");
   const [userLogged, setUserLogged] = useState<userLogged | null>(null);
-  const [category, setCategory] = useState("");
   const [listMessage, setListMessage] = useState<IListMessage[]>([]);
 
   const handleSignIn = async ({ password, username }: userData) => {
@@ -73,7 +72,7 @@ export function DevChatProvider({ children }: childrenProps) {
       setUser(token);
       api.defaults.headers["Authorization"] = `Bearer ${token}`; //
 
-      Router.push("/rooms/javascript");
+      Router.push("/rooms");
     } catch (error: AxiosError | any) {
       if (error.response as AxiosError) {
         setError(error.response.data.message);
@@ -142,7 +141,7 @@ export function DevChatProvider({ children }: childrenProps) {
   const filterMessageList = async () => {
     try {
       const { "dev-chat": token } = parseCookies();
-      console.log("category", category);
+     
 
       const response = await api.get("message", {
         headers: {
@@ -150,18 +149,13 @@ export function DevChatProvider({ children }: childrenProps) {
         },
 
         params: {
-          category: category,
+          category: 'hgh'
         },
       });
 
       console.log("Hello", response.data);
       setListMessage(response.data);
     } catch (error) {}
-  };
-
-  const getCategory = (handleCategory: string) => {
-    setCategory(handleCategory);
-    console.log(category);
   };
 
   useEffect(() => {
@@ -179,7 +173,6 @@ export function DevChatProvider({ children }: childrenProps) {
         handleSignIn,
         createNewUser,
         handleSendNewMessage,
-        getCategory,
       }}
     >
       {children}

@@ -9,6 +9,7 @@ import { DevChatContext, IListMessage } from "../../contexts/devChatContext";
 import { api } from "../../services/api";
 import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 
 const newMessageSchema = z.object({
   content: z.string().min(3),
@@ -17,48 +18,44 @@ const newMessageSchema = z.object({
 type NewMessageFormInputs = z.infer<typeof newMessageSchema>;
 
 export default function Rooms() {
-  const {query} = useRouter() 
-  const category 
-  const [historyMessages, setHistoryMessages] = useState<IListMessage[]>([])
-  
-  const { userLogged, handleSendNewMessage, getCategory } =
-    useContext(DevChatContext);
-  const { register, handleSubmit, reset } = useForm<NewMessageFormInputs>({
-    resolver: zodResolver(newMessageSchema),
-  });
+  const [historyMessages, setHistoryMessages] = useState<IListMessage[]>([]);
 
-  const getListMessage = async () => {
+  const { query } = useRouter();
+ 
+ 
+ const { userLogged, handleSendNewMessage } = useContext(DevChatContext);
+ const { register, handleSubmit, reset } = useForm<NewMessageFormInputs>({
+     resolver: zodResolver(newMessageSchema),
+    });
+    
+    const getListMessage = async () => {
     const { "dev-chat": token } = parseCookies();
-   
-
+    
     const response = await api.get("message", {
       headers: {
-        Authorization: token as string,
+          Authorization: token as string,
       },
-
+      
       params: {
-        category: 'ff',
-      },
+          category: query.category as string,
+        },
     });
+    
+    setHistoryMessages(response.data);
     console.log(historyMessages);
     
-    setHistoryMessages(response.data)
-  }
+  };
 
   const handleSubmitMessage = async (data: NewMessageFormInputs) => {
     handleSendNewMessage(data, "javascript");
-    setHistoryMessages((state) => [data, ...state])
+    setHistoryMessages((state) => [data, ...state]);
     reset();
   };
-  
 
-
-  
   useEffect(() => {
-    getCategory('javascript')
-    getListMessage()
-    historyMessages
-  }, [getCategory]);
+    getListMessage();
+   
+  }, [query.category]);
 
   return (
     <>
@@ -106,3 +103,20 @@ export default function Rooms() {
     </>
   );
 }
+
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const { "ngcash-token": token } = parseCookies(ctx);
+
+//   if (!token) {
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       },
+//     };
+//   }
+
+//   return {
+//     props: {},
+//   };
+// };

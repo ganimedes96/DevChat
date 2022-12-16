@@ -8,11 +8,11 @@ export const Categories = () => {
         Categorias
       </h2>
       <div className="flex flex-col text-gray-100 items-center justify-center gap-4 mt-4 p-2">
-        <Card category="Javascript" path={'javascript'}/>
-        <Card category="React JS" path={'reactjs'}/>
-        <Card category="PHP" path={'php'}/>
-        <Card category="Python" path={'python'}/>
-        <Card category="Mysql" path={'mysql'}/>
+        <Card category="javascript" path={'javascript'}/>
+        <Card category="reactjs" path={'react'}/>
+        <Card category="php" path={'php'}/>
+        <Card category="python" path={'python'}/>
+        <Card category="mysql" path={'mysql'}/>
       </div>
     </aside>
   );

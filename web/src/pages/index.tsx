@@ -21,8 +21,6 @@ export default function Home() {
   });
 
   const signIn = async (data: NewLoginFormInputs) => {
-    console.log(data);
-    const { username, password } = data;
     handleSignIn(data);
     reset();
   };
