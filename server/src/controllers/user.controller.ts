@@ -31,8 +31,10 @@ export default class UserController {
   public getLoggedInUser = async (req:Request, res:Response) => {
     try {
         const token = req.headers.authorization
+        
         const username = await tokenUsername(String(token)) 
         const getUser = await this._userService.getLoggedInUser(username)
+        
         res.status(200).json(getUser)
     } catch (error) {
       return res

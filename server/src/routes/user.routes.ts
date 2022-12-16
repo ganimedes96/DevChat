@@ -12,5 +12,5 @@ const token = new Token();
 
 router.post("/register", middleware.userValidation, userController.createUser);
 router.get("/", userController.getUsers);
-router.get("/logged", token.validationToken, userController.getLoggedInUser);
+router.get("/logged", userController.getLoggedInUser);
 export default router;

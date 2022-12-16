@@ -9,15 +9,15 @@ interface userProps {
 
 export const Header = ({ img_url, username }: userProps) => {
   return (
-    <header className="max-w-[1300px] flex items-center justify-center mx-auto p-8">
+    <header className="max-w-[1300px] flex items-center justify-between mx-auto p-8">
       <Link className="flex items-center justify-center gap-4" href="/">
         <Image src={Logo} alt="Logo" />
         <h2 className="text-gray-200 font-semibold text-xl">dev.Chat</h2>
       </Link>
 
-      <div>
-        <img src={img_url} alt={username} />
-        <span>{username}</span>
+      <div className="flex items-center justify-center gap-2 text-gray-200">
+        <img  className="w-8 rounded-full" src={img_url} alt={username} />
+        <span className="text-xs text-green-500">{username}</span>
       </div>
     </header>
   );

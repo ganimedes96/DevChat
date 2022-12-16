@@ -37,7 +37,7 @@ export default class messageService {
     return newMessage;
   };
 
-  public filterMessageCategory = async (category: string) => {
+  public filterCategoryId = async (category: string) => {
     const listCategories = await this.prisma.categories.findMany({
       where: {
         category,
@@ -49,19 +49,23 @@ export default class messageService {
 
     const categoryId = listCategories[0].id;
 
-    const listMessage = await this.prisma.messages.findMany({
+    const listMessageFilterByCategory = await this.prisma.messages.findMany({
       where: {
         categoriesId: categoryId,
       },
+      orderBy:{createdAt: 'desc'},
       select: {
+        id: true,
         content: true,
         User: {
           select: {
+            
             username: true,
+            img_url: true,
           },
         },
       },
     });
-    return listMessage;
+    return listMessageFilterByCategory;
   };
 }

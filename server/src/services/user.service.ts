@@ -9,6 +9,7 @@ export default class UserService {
       data: {
         username,
         password,
+        img_url: `https://github.com/${username}.png`,
       },
     });
     return newUser;
@@ -20,12 +21,15 @@ export default class UserService {
   };
 
   public getLoggedInUser = async (username: string) => {
+    
+    
     const user = this.prisma.user.findUnique({
       where: {
         username,
       },
       select: {
         username: true,
+        img_url: true,
       },
     });
     return user;

@@ -31,7 +31,7 @@ export default class MessageController {
   ) => {
     try {
       const category = req.query.category as string;
-      const filterMessages = await this._messageService.filterMessageCategory(
+      const filterMessages = await this._messageService.filterCategoryId(
         category
       );
       res.status(200).json(filterMessages);
