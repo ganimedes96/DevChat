@@ -34,4 +34,17 @@ export default class UserService {
     });
     return user;
   };
+
+  public getUserId = async (username: string) => {
+    const UserId = await this.prisma.user.findMany({
+      where: {
+        username,
+      },
+      select: {
+        id: true,
+      },
+    });
+    return UserId
+  }    
+
 }

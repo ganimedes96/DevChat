@@ -18,4 +18,16 @@ export default class CategoryService {
     const categories = await this.prisma.categories.findMany();
     return categories;
   };
+
+  public getCategoryId = async (category: string) => {
+    const categoryId = await this.prisma.categories.findMany({
+      where: {
+        category,
+      },
+      select: {
+        id: true,
+      },
+    });
+    return categoryId
+  }
 }

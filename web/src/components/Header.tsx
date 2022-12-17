@@ -9,7 +9,7 @@ interface userProps {
 
 export const Header = ({ img_url, username }: userProps) => {
   return (
-    <header className="max-w-[1300px] flex items-center justify-between mx-auto p-8">
+    <header className="max-w-[1100px] flex items-center justify-between mx-auto p-8">
       <Link className="flex items-center justify-center gap-4" href="/">
         <Image src={Logo} alt="Logo" />
         <h2 className="text-gray-200 font-semibold text-xl">dev.Chat</h2>

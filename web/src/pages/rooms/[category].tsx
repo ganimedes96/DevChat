@@ -1,12 +1,13 @@
-import { PaperPlaneTilt } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import Image from 'next/image'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Categories } from "../../components/Categories";
 import { Header } from "../../components/Header";
 import { useContext, useEffect, useState } from "react";
 import { DevChatContext, IListMessage } from "../../contexts/devChatContext";
 import { api } from "../../services/api";
+import { PaperPlaneTilt } from "phosphor-react";
 import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
@@ -21,29 +22,26 @@ export default function Rooms() {
   const [historyMessages, setHistoryMessages] = useState<IListMessage[]>([]);
 
   const { query } = useRouter();
- 
- 
- const { userLogged, handleSendNewMessage } = useContext(DevChatContext);
- const { register, handleSubmit, reset } = useForm<NewMessageFormInputs>({
-     resolver: zodResolver(newMessageSchema),
-    });
-    
-    const getListMessage = async () => {
+
+  const { userLogged, handleSendNewMessage } = useContext(DevChatContext);
+  const { register, handleSubmit, reset } = useForm<NewMessageFormInputs>({
+    resolver: zodResolver(newMessageSchema),
+  });
+
+  const getListMessage = async () => {
     const { "dev-chat": token } = parseCookies();
-    
+
     const response = await api.get("message", {
       headers: {
-          Authorization: token as string,
+        Authorization: token as string,
       },
-      
+
       params: {
-          category: query.category as string,
-        },
+        category: query.category as string,
+      },
     });
-    
+
     setHistoryMessages(response.data);
-    console.log(historyMessages);
-    
   };
 
   const handleSubmitMessage = async (data: NewMessageFormInputs) => {
@@ -51,10 +49,10 @@ export default function Rooms() {
     setHistoryMessages((state) => [data, ...state]);
     reset();
   };
+  console.log(historyMessages);
 
   useEffect(() => {
     getListMessage();
-   
   }, [query.category]);
 
   return (
@@ -64,24 +62,32 @@ export default function Rooms() {
         <Categories />
         <section className="w-full  bg-gray-600 h-[400px] rounded ">
           <div className="h-full overflow-hidden overflow-y-scroll   p-4  text-gray-200 text-xs flex flex-col-reverse items-start justify-start ">
-            {historyMessages?.map((data) => (
-              <div
-                className="flex  items-center justify-center gap-4 mt-6"
-                key={data.id}
-              >
-                <img
-                  className="w-10 h-10 rounded-full"
-                  src={data.User?.img_url}
-                  alt=""
-                />
-                <div>
-                  <span className="text-sm font-semibold text-purple-300">
-                    {data.User?.username}
-                  </span>
-                  <p>{data.content}</p>
-                </div>
+            {historyMessages.length === 0 ? (
+              <div className="flex flex-col items-center justify-start w-full h-screen mt-32">
+                <Image src='/images/noquestions.svg' width={60} height={60} alt='baloes de textos'/>
+                <p className="font-semibold">Seja o primeiro a perguntar</p>
               </div>
-            ))}
+            ) : (
+              historyMessages?.map((data) => (
+                <div
+                  className="flex  items-center justify-center gap-4 mt-6"
+                  key={data.id}
+                >
+                  <img
+                    className="w-10 h-10 rounded-full"
+                    src={data.User?.img_url}
+                    alt=""
+                   
+                  />
+                  <div>
+                    <span className="text-sm font-semibold text-purple-300">
+                      {data.User?.username}
+                    </span>
+                    <p>{data.content}</p>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
 
           <form
@@ -104,19 +110,19 @@ export default function Rooms() {
   );
 }
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { "ngcash-token": token } = parseCookies(ctx);
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { "dev-chat": token } = parseCookies(ctx);
 
-//   if (!token) {
-//     return {
-//       redirect: {
-//         destination: "/",
-//         permanent: false,
-//       },
-//     };
-//   }
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
-//   return {
-//     props: {},
-//   };
-// };
+  return {
+    props: {},
+  };
+};

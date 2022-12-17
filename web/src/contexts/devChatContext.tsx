@@ -36,18 +36,22 @@ export interface IListMessage {
   };
 }
 
+export interface ICategory {
+  id: string;
+  category: string;
+}
+
 type DevChatContextType = {
   user: IUser | null;
   error: string;
+  listCategory: ICategory[];
   userLogged: userLogged | null;
-  listMessage: IListMessage[];
   handleSignIn: (data: userData) => Promise<void>;
   createNewUser: (data: userData) => Promise<void>;
   handleSendNewMessage: (
     data: IMessage,
     handleCategory: string
   ) => Promise<void>;
-
 };
 
 export const DevChatContext = createContext({} as DevChatContextType);
@@ -56,7 +60,7 @@ export function DevChatProvider({ children }: childrenProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const [error, setError] = useState("");
   const [userLogged, setUserLogged] = useState<userLogged | null>(null);
-  const [listMessage, setListMessage] = useState<IListMessage[]>([]);
+  const [listCategory, setListCategory] = useState<ICategory[]>([]);
 
   const handleSignIn = async ({ password, username }: userData) => {
     try {
@@ -70,7 +74,7 @@ export function DevChatProvider({ children }: childrenProps) {
       });
 
       setUser(token);
-      api.defaults.headers["Authorization"] = `Bearer ${token}`; //
+      api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
       Router.push("/rooms");
     } catch (error: AxiosError | any) {
@@ -138,29 +142,23 @@ export function DevChatProvider({ children }: childrenProps) {
     } catch (error) {}
   };
 
-  const filterMessageList = async () => {
+  const getCategoryList = async () => {
     try {
       const { "dev-chat": token } = parseCookies();
-     
 
-      const response = await api.get("message", {
+      const response = await api.get("category", {
         headers: {
           Authorization: token as string,
         },
-
-        params: {
-          category: 'hgh'
-        },
       });
 
-      console.log("Hello", response.data);
-      setListMessage(response.data);
+      setListCategory(response.data);
     } catch (error) {}
   };
 
   useEffect(() => {
-    filterMessageList();
     getUserLogged();
+    getCategoryList();
   }, []);
 
   return (
@@ -168,8 +166,8 @@ export function DevChatProvider({ children }: childrenProps) {
       value={{
         user,
         error,
+        listCategory,
         userLogged,
-        listMessage,
         handleSignIn,
         createNewUser,
         handleSendNewMessage,
