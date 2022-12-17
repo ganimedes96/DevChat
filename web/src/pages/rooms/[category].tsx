@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 
 const newMessageSchema = z.object({
-  content: z.string().min(3),
+  content: z.string().min(1),
 });
 
 type NewMessageFormInputs = z.infer<typeof newMessageSchema>;
@@ -58,14 +58,15 @@ export default function Rooms() {
   return (
     <>
       <Header img_url={userLogged?.img_url} username={userLogged?.username} />
-      <main className="flex items-center justify-between gap-4 px-4">
+       <h2 className="text-center text-green-500 -mb-20" ># dev.Chat | {query.category}</h2>
+      <main className="flex items-center justify-between gap-4 px-4 h-screen">
         <Categories />
         <section className="w-full  bg-gray-600 h-[400px] rounded ">
           <div className="h-full overflow-hidden overflow-y-scroll   p-4  text-gray-200 text-xs flex flex-col-reverse items-start justify-start ">
             {historyMessages.length === 0 ? (
               <div className="flex flex-col items-center justify-start w-full h-screen mt-32">
                 <Image src='/images/noquestions.svg' width={60} height={60} alt='baloes de textos'/>
-                <p className="font-semibold">Seja o primeiro a perguntar</p>
+                <p className="font-semibold">Nenhuma pergunta por aqui...</p>
               </div>
             ) : (
               historyMessages?.map((data) => (
@@ -92,7 +93,7 @@ export default function Rooms() {
 
           <form
             onSubmit={handleSubmit(handleSubmitMessage)}
-            className="mt-4 flex items-center justify-center gap-2"
+            className="mt-4  flex items-center justify-center gap-2 "
           >
             <input
               {...register("content")}
