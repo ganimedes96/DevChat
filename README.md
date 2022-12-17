@@ -69,7 +69,7 @@ $ Depois rode os comandos `npm run dev` para inicar a aplicacao `web` e o mesmo 
 #Rota POST http://localhost:3001/login  
 {
   "username": "John Doe",
-  "password": "Jhondoe@123"
+  "password": "123456"
 }
 
 ```
