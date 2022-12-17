@@ -45,7 +45,7 @@ export default function Rooms() {
   };
 
   const handleSubmitMessage = async (data: NewMessageFormInputs) => {
-    handleSendNewMessage(data, "javascript");
+    handleSendNewMessage(data, String(query.category));
     setHistoryMessages((state) => [data, ...state]);
     reset();
   };
@@ -58,7 +58,7 @@ export default function Rooms() {
   return (
     <>
       <Header img_url={userLogged?.img_url} username={userLogged?.username} />
-       <h2 className="text-center text-green-500 -mb-20" ># dev.Chat | {query.category}</h2>
+            <h2 className="text-center text-green-500 -mb-20" ># dev.Chat | {query.category}</h2>
       <main className="flex items-center justify-between gap-4 px-4 h-screen">
         <Categories />
         <section className="w-full  bg-gray-600 h-[400px] rounded ">

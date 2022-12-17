@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <Header visibility="invisible"/>
       <main className="max-w-[1124px] w-full  mx-auto flex justify-between items-center px-10">
         <section className="w-[1/2] ">
           <Image

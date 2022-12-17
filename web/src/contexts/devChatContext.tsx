@@ -122,10 +122,11 @@ export function DevChatProvider({ children }: childrenProps) {
   const handleSendNewMessage = async (
     { content }: IMessage,
     handleCategory: string
+
   ) => {
     try {
       const { "dev-chat": token } = parseCookies();
-      console.log(handleCategory);
+      console.log('Categoty',handleCategory);
 
       await api.post(
         "message",

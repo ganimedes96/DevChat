@@ -5,9 +5,10 @@ import Logo from "../../public/images/logo2.svg";
 interface userProps {
   img_url?: string;
   username?: string;
+  visibility?: string;
 }
 
-export const Header = ({ img_url, username }: userProps) => {
+export const Header = ({ img_url, username, visibility }: userProps) => {
   return (
     <header className="max-w-[1100px] flex items-center justify-between mx-auto p-8">
       <Link className="flex items-center justify-center gap-4" href="/">
@@ -15,7 +16,7 @@ export const Header = ({ img_url, username }: userProps) => {
         <h2 className="text-gray-200 font-semibold text-xl">dev.Chat</h2>
       </Link>
 
-      <div className="flex items-center justify-center gap-2 text-gray-200">
+      <div className={`${visibility} flex items-center justify-center gap-2 text-gray-200`}>
         <img  className="w-8 rounded-full" src={img_url} alt={username} />
         <span className="text-xs text-green-500">{username}</span>
       </div>
