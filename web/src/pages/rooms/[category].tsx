@@ -49,8 +49,7 @@ export default function Rooms() {
     setHistoryMessages((state) => [data, ...state]);
     reset();
   };
-  console.log(historyMessages);
-
+ 
   useEffect(() => {
     getListMessage();
   }, [query.category]);

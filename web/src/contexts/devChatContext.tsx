@@ -126,8 +126,7 @@ export function DevChatProvider({ children }: childrenProps) {
   ) => {
     try {
       const { "dev-chat": token } = parseCookies();
-      console.log('Categoty',handleCategory);
-
+      
       await api.post(
         "message",
         { content },
@@ -160,6 +159,7 @@ export function DevChatProvider({ children }: childrenProps) {
   useEffect(() => {
     getUserLogged();
     getCategoryList();
+    
   }, []);
 
   return (

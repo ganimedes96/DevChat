@@ -1,12 +1,16 @@
 import Image from "next/image";
 import { Categories } from "../../components/Categories";
 import { Header } from "../../components/Header";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { DevChatContext } from "../../contexts/devChatContext";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
 
 export default function Rooms() {
   const { userLogged } = useContext(DevChatContext);
-
+  useEffect(() => {
+    userLogged
+  }, [userLogged])
   return (
     <>
       <Header img_url={userLogged?.img_url} username={userLogged?.username} />
@@ -35,3 +39,20 @@ export default function Rooms() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { "dev-chat": token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
