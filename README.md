@@ -109,7 +109,7 @@ $ Depois rode os comandos `npm run dev` para inicar a aplicacao `web` e o mesmo 
 - <p>Nessa rota e retornado um JSON no seguinte formato</p>
 
 ```bash
-#Rota GET http://localhost:3001/transactions/filter
+#Rota GET http://localhost:3001/message
 [
 	{
 		"id": "clbs4d8oq0001i0p2bi8j6g6s",
