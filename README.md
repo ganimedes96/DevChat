@@ -32,7 +32,7 @@ Tecnologias utilizadas no backend
  **Clone o projeto e acesse a pasta**
 
 ```bash
-$ git clone https://github.com/ganimedes96/dev.Chat && cd dev.Chat
+$ git clone git@github.com:ganimedes96/DevChat.git && cd DevChat
 ```
 **Siga as etapas abaixo para instalar as dependências necessárias**
 
