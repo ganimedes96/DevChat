@@ -15,14 +15,14 @@ export default class messageService {
     const getCategoryId = await this.categoryService.getCategoryId(category);
     const getUserId = await this.userService.getUserId(username);
 
-    const userId = getUserId[0].id;
+    const userId = getUserId?.id ;
     const categoryId = getCategoryId[0].id;
 
     const newMessage = await this.prisma.messages.create({
       data: {
         content: messageInfo.content,
         categoriesId: categoryId,
-        userId: userId,
+        userId: String(userId),
       },
     });
     return newMessage;

@@ -16,7 +16,7 @@ export default class UserController {
     }
   };
 
-  public getUsers = async (req:Request, res:Response) => {
+  public getUsers = async (_req:Request, res:Response) => {
     try {
         const users = await this._userService.getUsers()
         res.status(200).json(users)

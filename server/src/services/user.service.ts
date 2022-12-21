@@ -21,8 +21,6 @@ export default class UserService {
   };
 
   public getLoggedInUser = async (username: string) => {
-    
-    
     const user = this.prisma.user.findUnique({
       where: {
         username,
@@ -36,7 +34,7 @@ export default class UserService {
   };
 
   public getUserId = async (username: string) => {
-    const UserId = await this.prisma.user.findMany({
+    const UserId = await this.prisma.user.findUnique({
       where: {
         username,
       },
@@ -44,7 +42,6 @@ export default class UserService {
         id: true,
       },
     });
-    return UserId
-  }    
-
+    return UserId;
+  };
 }
