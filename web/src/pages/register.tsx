@@ -29,9 +29,6 @@ export default function Register() {
     reset();
   };
 
-  const hello = () => {
-    console.log("Hello");
-  };
   return (
     <>
       <Header />

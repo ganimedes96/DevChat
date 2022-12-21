@@ -1,16 +1,16 @@
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import Image from 'next/image'
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Categories } from "../../components/Categories";
-import { Header } from "../../components/Header";
 import { useContext, useEffect, useState } from "react";
-import { DevChatContext, IListMessage } from "../../contexts/devChatContext";
-import { api } from "../../services/api";
-import { PaperPlaneTilt } from "phosphor-react";
-import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { useForm } from "react-hook-form";
+import Image from 'next/image'
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { parseCookies } from "nookies";
+import { PaperPlaneTilt } from "phosphor-react";
+import { DevChatContext, IListMessage } from "../../contexts/devChatContext";
+import { api } from "../../services/api";
+import { Categories } from "../../components/Categories";
+import { Header } from "../../components/Header";
 
 const newMessageSchema = z.object({
   content: z.string().min(1),
@@ -46,13 +46,13 @@ export default function Rooms() {
 
   const handleSubmitMessage = async (data: NewMessageFormInputs) => {
     handleSendNewMessage(data, String(query.category));
-    setHistoryMessages((state) => [data, ...state]);
     reset();
+    
   };
  
   useEffect(() => {
     getListMessage();
-  }, [query.category]);
+  }, [query.category, historyMessages]);
 
   return (
     <>
@@ -61,7 +61,7 @@ export default function Rooms() {
       <main className="flex items-center justify-between gap-4 px-4 h-screen">
         <Categories />
         <section className="w-full  bg-gray-600 h-[400px] rounded ">
-          <div className="h-full overflow-hidden overflow-y-scroll   p-4  text-gray-200 text-xs flex flex-col-reverse items-start justify-start ">
+          <div className="h-full scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-400 overflow-y-scroll   p-4  text-gray-200 text-xs flex flex-col-reverse items-start justify-start ">
             {historyMessages.length === 0 ? (
               <div className="flex flex-col items-center justify-start w-full h-screen mt-32">
                 <Image src='/images/noquestions.svg' width={60} height={60} alt='baloes de textos'/>

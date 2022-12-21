@@ -1,11 +1,10 @@
 /** @type {import('tailwindcss').Config} */
+
 const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: ["./src/**/*.tsx"],
-  plugins: [
-    // ...
-    require('tailwind-scrollbar'),
-],
+  plugins: [require('tailwind-scrollbar')({ nocompatible: true })],
+  variants:{scrollbar: ['rounded']},
   theme: {
     extend: {
       fontFamily: {
@@ -47,5 +46,4 @@ module.exports = {
       },
     },
   },
-  plugins: [],
 };

@@ -37,7 +37,7 @@ export interface IListMessage {
 }
 
 export interface ICategory {
-  id: string;
+  id?: string;
   category: string;
 }
 
@@ -52,6 +52,7 @@ type DevChatContextType = {
     data: IMessage,
     handleCategory: string
   ) => Promise<void>;
+  createNewCategory: (data: ICategory) => Promise<void>;
 };
 
 export const DevChatContext = createContext({} as DevChatContextType);
@@ -122,11 +123,10 @@ export function DevChatProvider({ children }: childrenProps) {
   const handleSendNewMessage = async (
     { content }: IMessage,
     handleCategory: string
-
   ) => {
     try {
       const { "dev-chat": token } = parseCookies();
-      
+
       await api.post(
         "message",
         { content },
@@ -156,11 +156,20 @@ export function DevChatProvider({ children }: childrenProps) {
     } catch (error) {}
   };
 
+  const createNewCategory = async ({ category }: ICategory) => {
+    try {
+      await api.post("category/register", {
+        category,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getUserLogged();
     getCategoryList();
-    
-  }, []);
+  }, [listCategory]);
 
   return (
     <DevChatContext.Provider
@@ -172,6 +181,7 @@ export function DevChatProvider({ children }: childrenProps) {
         handleSignIn,
         createNewUser,
         handleSendNewMessage,
+        createNewCategory,
       }}
     >
       {children}
