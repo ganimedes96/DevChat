@@ -26,6 +26,7 @@ export default class UserService {
         username,
       },
       select: {
+        id: true,
         username: true,
         img_url: true,
       },

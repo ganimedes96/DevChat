@@ -131,9 +131,7 @@ export function DevChatProvider({ children }: childrenProps) {
         "message",
         { content },
         {
-          headers: {
-            Authorization: token as string,
-          },
+          headers: { Authorization: token as string },
           params: {
             category: handleCategory ? handleCategory : "",
           },
@@ -158,9 +156,11 @@ export function DevChatProvider({ children }: childrenProps) {
 
   const createNewCategory = async ({ category }: ICategory) => {
     try {
-      await api.post("category/register", {
-        category,
-      });
+      const { "dev-chat": token } = parseCookies();
+      await api.post("category/register", 
+      { category },
+      {headers:{Authorization: token as string,} }
+      );
     } catch (error) {
       console.log(error);
     }

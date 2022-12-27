@@ -1,12 +1,21 @@
 import express from "express";
-import cors from "cors"
+import cors from "cors";
 import routes from "./routes/routes";
 
-const app = express();
+class App {
+  public app: express.Express;
+  constructor() {
+    this.app = express();
+    this.config();
+  }
+  public config(): void {
+    this.app.use(express.json());
+    this.app.use(cors());
+    this.app.use(routes);
+  }
+  public start(PORT: string | number): void {
+    this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
+  }
+}
 
-app.use(express.json());
-app.use(cors())
-
-app.use(routes);
-
-export default app;
+export default App;

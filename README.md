@@ -19,6 +19,8 @@ Tecnologias utilizadas no frondend
 - [Eslint](https://eslint.org/)
 - [axios](https://axios-http.com/docs/intro)
 - [nookies](https://www.npmjs.com/package/nookies)
+- [react-hook-form]()
+- [zod]()
 
 Tecnologias utilizadas no backend
 

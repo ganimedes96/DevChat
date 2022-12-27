@@ -12,6 +12,13 @@ export default class MiddlewareLogin {
 
     const getUsers = await prisma.user.findMany();
 
+    if (!username) {
+      return res.status(400).json({ message: 'All fields must be filled' });
+    }
+    if (!password) {
+      return res.status(400).json({ message: 'All fields must be filled' });
+    }
+
     const getUsername = getUsers.some((name) => name.username === username);
 
     const getPassword = getUsers.some((pass) => pass.password === password);

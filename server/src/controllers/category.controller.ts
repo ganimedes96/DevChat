@@ -1,12 +1,15 @@
 import { Request, Response } from "express";
 import CategoryService from "../services/category.service";
+import { tokenUsername } from "../utils/tokenUsername";
 
 export default class CategoryController {
     constructor(private _categoryService: CategoryService ) {}
     public createCategory = async (req:Request, res:Response) => {
         try {
            const category = req.body
-           const newCategory = await this._categoryService.createCategory(category)
+           const token = req.headers.authorization
+           const username = await tokenUsername(String(token))
+           const newCategory = await this._categoryService.createCategory(category, username)
            res.status(201).json(newCategory)     
         } catch (error) {
             console.log(error);
@@ -14,6 +17,13 @@ export default class CategoryController {
             
         }
     } 
+
+    public deleteCategory = async (req: Request, res:Response) => {
+        const {category} = req.params
+        const token = req.headers.authorization 
+        const { type, message } = await this._categoryService.deleteCategory(String(category),String(token))
+        res.status(type).json(message)
+    }
     
     public listCategory = async (req:Request, res:Response) => {
         try {

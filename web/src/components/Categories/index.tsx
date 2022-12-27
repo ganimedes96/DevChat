@@ -13,7 +13,7 @@ export const Categories = () => {
       <h2 className="text-gray-200 text-center mt-1 font-semibold">
         Categorias
       </h2>
-      <div className=" flex flex-col text-gray-100 items-center justify-center gap-4 mt-4 p-4 pl-2">
+      <div className=" flex flex-col text-gray-100 items-center justify-center gap-4 mt-4 p-4 ">
         {listCategory.map((category) => (
           <Card
             key={category.id}

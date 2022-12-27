@@ -3,19 +3,28 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+model Categories {
+  id       String     @id @default(cuid())
+  category String
+  userId   String
+  Messages Messages[]
+  User     User       @relation(fields: [userId], references: [id])
+}
 
 model User {
-  id       String     @id @default(cuid())
-  username String     @unique
-  password String
-  img_url  String
-  Messages Messages[]
+  id         String       @id @default(cuid())
+  username   String       @unique
+  password   String
+  img_url    String
+  Messages   Messages[]
+  Categories Categories[]
 }
 
 model Messages {
@@ -23,13 +32,8 @@ model Messages {
   content      String
   categoriesId String
   userId       String
-  createdAt DateTime @default(now())
+  createdAt    DateTime   @default(now())
   User         User       @relation(fields: [userId], references: [id])
-  Categorie    Categories @relation(fields: [categoriesId], references: [id])
+  Categorie    Categories @relation(fields: [categoriesId], references: [id], onDelete: Cascade)
 }
 
-model Categories {
-  id       String     @id @default(cuid())
-  category String
-  Messages Messages[]
-}
