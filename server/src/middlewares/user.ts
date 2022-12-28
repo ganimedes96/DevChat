@@ -11,6 +11,13 @@ export default class CreateUserValidation {
     const prisma = new PrismaClient();
     const users = await prisma.user.findMany();
   
+    if (!username) {
+      return res.status(400).json({ message: 'All fields must be filled' });
+    }
+    if (!password) {
+      return res.status(400).json({ message: 'All fields must be filled' });
+    }
+
     if (username.length < 3) {
       return res.status(400).json({ message: "Invalid username" });
     }

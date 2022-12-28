@@ -24,7 +24,6 @@ export default function Register() {
   });
 
   const registerUser = async (data: NewRegisterFormInputs) => {
-    console.log(data);
     createNewUser(data);
     reset();
   };

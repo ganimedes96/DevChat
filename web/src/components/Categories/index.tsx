@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DevChatContext } from "../../contexts/devChatContext";
 import { Card } from "./Card";
 import { Plus } from "phosphor-react";
@@ -6,8 +6,11 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { NewCategoryModal } from "./NewCategoryModal";
 
 export const Categories = () => {
-  const { listCategory } = useContext(DevChatContext);
+  const { listCategory, getCategoryInfo } = useContext(DevChatContext);
+ 
+  useEffect(() => {
 
+  }, [listCategory])
   return (
     <aside className="h-[400px] w-[200px] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-400   overflow-y-auto  bg-gray-900 rounded">
       <h2 className="text-gray-200 text-center mt-1 font-semibold">
@@ -16,6 +19,7 @@ export const Categories = () => {
       <div className=" flex flex-col text-gray-100 items-center justify-center gap-4 mt-4 p-4 ">
         {listCategory.map((category) => (
           <Card
+            userId={category.userId}
             key={category.id}
             category={category.category}
             path={category.category}

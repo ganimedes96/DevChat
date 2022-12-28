@@ -8,18 +8,15 @@ chai.use(chaiHttp);
 const { expect } = chai;
 const { app } = new App();
 const prisma = new PrismaClient();
-const user = {
+const user = [{
   id: "clbykvswx0000i0kadsdnp4tk",
   username: "Felix",
   password: "123456",
   img_url: "https://github.com/Felix.png",
-};
+}];
 
 describe("test login route", async () => {
-  before(async () => {
-    sinon.stub(prisma.user, "findUnique").resolves(user);
-  });
-
+ 
   it("must be able to login successfully", async () => {
     const user = {
       username: "Felix",
@@ -29,14 +26,14 @@ describe("test login route", async () => {
     expect(result).to.have.status(200);
   });
   it("login without username", async () => {
-    const result = await chai.request(app).post("/login").send(user.password);
+    const result = await chai.request(app).post("/login").send(user[0].password);
     expect(result).to.have.status(400);
     expect(result.body).to.be.deep.equal({
       message: "All fields must be filled",
     });
   });
   it("login without password", async () => {
-    const result = await chai.request(app).post("/login").send(user.username);
+    const result = await chai.request(app).post("/login").send(user[0].username);
     expect(result).to.have.status(400);
     expect(result.body).to.be.deep.equal({
       message: "All fields must be filled",
@@ -64,7 +61,5 @@ describe("test login route", async () => {
       message: "username or password incorrect",
     });
   });
-  after(() => {
-    (prisma.user.findUnique as sinon.SinonStub).restore();
-  });
+  
 });

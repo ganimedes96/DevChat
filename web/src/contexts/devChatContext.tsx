@@ -19,6 +19,7 @@ export interface IUser {
 }
 
 export interface userLogged {
+  id?: string;
   username: string;
   img_url: string;
 }
@@ -37,15 +38,21 @@ export interface IListMessage {
 }
 
 export interface ICategory {
+  category: string;
+}
+
+interface ICategoryInfo {
   id?: string;
   category: string;
+  userId: string;
 }
 
 type DevChatContextType = {
   user: IUser | null;
   error: string;
-  listCategory: ICategory[];
+  listCategory: ICategoryInfo[];
   userLogged: userLogged | null;
+  getCategoryInfo: ICategoryInfo | null;
   handleSignIn: (data: userData) => Promise<void>;
   createNewUser: (data: userData) => Promise<void>;
   handleSendNewMessage: (
@@ -53,6 +60,8 @@ type DevChatContextType = {
     handleCategory: string
   ) => Promise<void>;
   createNewCategory: (data: ICategory) => Promise<void>;
+  handleGetCategoryInfo: (data: ICategoryInfo) => void;
+  handleDeleteRoom: (room: string) => Promise<void>;
 };
 
 export const DevChatContext = createContext({} as DevChatContextType);
@@ -61,7 +70,10 @@ export function DevChatProvider({ children }: childrenProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const [error, setError] = useState("");
   const [userLogged, setUserLogged] = useState<userLogged | null>(null);
-  const [listCategory, setListCategory] = useState<ICategory[]>([]);
+  const [listCategory, setListCategory] = useState<ICategoryInfo[]>([]);
+  const [getCategoryInfo, setGetCategoryInfo] = useState<ICategoryInfo | null>(
+    null
+  );
 
   const handleSignIn = async ({ password, username }: userData) => {
     try {
@@ -157,19 +169,31 @@ export function DevChatProvider({ children }: childrenProps) {
   const createNewCategory = async ({ category }: ICategory) => {
     try {
       const { "dev-chat": token } = parseCookies();
-      await api.post("category/register", 
-      { category },
-      {headers:{Authorization: token as string,} }
+      await api.post(
+        "category/register",
+        { category },
+        { headers: { Authorization: token as string } }
       );
     } catch (error) {
       console.log(error);
     }
   };
+  const handleGetCategoryInfo = (data: ICategoryInfo) => {
+    setGetCategoryInfo(data);
+  };
+
+  const handleDeleteRoom = async (room: string) => {
+    const { "dev-chat": token } = parseCookies();
+    await api.get(`/category/${room}`, {
+      headers: { Authorization: token as string },
+    });
+    Router.push("/rooms");
+  };
 
   useEffect(() => {
     getUserLogged();
     getCategoryList();
-  }, [listCategory]);
+  }, []);
 
   return (
     <DevChatContext.Provider
@@ -178,10 +202,13 @@ export function DevChatProvider({ children }: childrenProps) {
         error,
         listCategory,
         userLogged,
+        getCategoryInfo,
         handleSignIn,
         createNewUser,
         handleSendNewMessage,
+        handleGetCategoryInfo,
         createNewCategory,
+        handleDeleteRoom,
       }}
     >
       {children}
